@@ -1,0 +1,17 @@
+[
+  {
+    "username": "admin",
+    "password": "Admin@123",
+    "email": "admin@example.com",
+    "role": "admin",
+    "permissions": ["dashboard", "inventory", "users"]
+  },
+  {
+    "username": "sales",
+    "password": "Sales@123",
+    "email": "sales@example.com",
+    "role": "sales",
+    "permissions": ["dashboard", "inventory"]
+  }
+]
+

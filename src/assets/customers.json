@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "John Traders",
+    "contact": "+254712345678",
+    "lat": -1.2921,
+    "lng": 36.8219
+  },
+  {
+    "id": 2,
+    "name": "Mombasa Wholesalers",
+    "contact": "+254722334455",
+    "lat": -4.0435,
+    "lng": 39.6682
+  }
+]
