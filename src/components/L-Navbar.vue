@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue'; // ✅ FIXED: added computed
 import NotificationCenter from './notifications/NotificationCenter.vue';
 
 const dropdownOpen = ref(false);

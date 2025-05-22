@@ -14,7 +14,7 @@
           v-for="item in navItems"
           :key="item.name"
           :class="{ active: activeItem === item.name }"
-          @click="navigate(item.name)"
+          @click="navigate(item)"
         >
           <component :is="item.icon" class="icon" />
           <span v-if="!collapsed">{{ item.name }}</span>
@@ -30,13 +30,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { HomeIcon, BarChartIcon, BoxesIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
+import { ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import {
+  HomeIcon,
+  BarChartIcon,
+  BoxesIcon,
+  UsersIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
+} from 'lucide-vue-next';
 
 const router = useRouter();
+const route = useRoute();
 const collapsed = ref(false);
-const activeItem = ref('Dashboard');
 
 const user = {
   name: 'Kevin Odhiambo',
@@ -44,15 +51,21 @@ const user = {
   profilePicture: 'https://via.placeholder.com/100'
 };
 
+// Sidebar navigation items
 const navItems = [
-  { name: 'Dashboard', icon: HomeIcon },
-  { name: 'Sales', icon: BarChartIcon },
-  { name: 'Inventory', icon: BoxesIcon },
+  { name: 'Dashboard', icon: HomeIcon, path: '/dashboard' },
+  { name: 'Sales', icon: BarChartIcon, path: '/dashboard/sales' },
+  { name: 'Inventory', icon: BoxesIcon, path: '/dashboard/inventory' },
+  { name: 'Customers', icon: UsersIcon, path: '/dashboard/customers' } // ✅ Added
 ];
 
-function navigate(name) {
-  activeItem.value = name;
-  router.push(`/${name.toLowerCase()}`);
+const activeItem = computed(() => {
+  const current = navItems.find(item => route.path.startsWith(item.path));
+  return current ? current.name : '';
+});
+
+function navigate(item) {
+  router.push(item.path);
 }
 
 function toggleCollapse() {
@@ -124,4 +137,3 @@ function toggleCollapse() {
   align-self: center;
 }
 </style>
-

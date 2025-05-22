@@ -21,14 +21,19 @@ export const useAuthStore = defineStore('auth', {
       }
 
       try {
-        const data = await fetch('/src/assets/user_data.json')
-        const users = await data.json()
-        const foundUser = users.find(u => u.username === username && u.password === password)
+        // Vite requires files from 'public/' folder for static fetch
+        const res = await fetch('/user_data.json') 
+        const users = await res.json()
+
+        const foundUser = users.find(
+          u => u.username === username && u.password === password
+        )
 
         if (foundUser) {
           this.user = foundUser
           this.isAuthenticated = true
           this.loginAttempts = 0
+
           const storeType = remember ? localStorage : sessionStorage
           storeType.setItem('auth_token', 'fake-token')
           storeType.setItem('user', JSON.stringify(foundUser))
@@ -44,20 +49,27 @@ export const useAuthStore = defineStore('auth', {
           this.error = "Invalid credentials"
         }
       } catch (e) {
-        this.error = "Something went wrong"
+        console.error("Login error:", e)
+        this.error = "Something went wrong while logging in."
+      } finally {
+        this.loading = false
       }
-
-      this.loading = false
     },
+
     logout() {
       this.user = null
       this.isAuthenticated = false
       localStorage.clear()
       sessionStorage.clear()
     },
+
     checkAuth() {
-      const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')
-      const user = localStorage.getItem('user') || sessionStorage.getItem('user')
+      const token =
+        localStorage.getItem('auth_token') ||
+        sessionStorage.getItem('auth_token')
+      const user =
+        localStorage.getItem('user') ||
+        sessionStorage.getItem('user')
 
       if (token && user) {
         this.isAuthenticated = true
